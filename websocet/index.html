@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <h1>
+            Contorl LED light
+        </h1>
+
+        <p>
+            <input type="checkbox" id="light">
+        </p>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+
+        <script>
+            var socket =io("http://192.168.178.37:8080");
+            window.addEventListener("load", function() {
+                var lightbox = document.getElementById("light");
+                lightbox.addEventListener("change", function() {
+                    socket.emit("light", Number(this.checked));
+                });
+            });
+            socket.on('light', function(data) {
+                document.getElementById("light").checked = data;
+                socket.emit("light", data);
+            });
+        </script>
+
+    </body>
+</html>
