@@ -12,6 +12,7 @@ blueRGB = 0;
 ledRed.digitalWrite(0);
 ledGreen.digitalWrite(0);
 ledBlue.digitalWrite(0);
+//console.log("1,2,3");
 
 http.listen(8080);
 
@@ -19,17 +20,20 @@ function handler(req, res) {
     fs.readFile(__dirname + '/public/rgb.html', function (err, data) {
         if (err) {
             res.writeHead(404, {'Content-Type': 'text/html'});
+            //console.log("Err!");
             return res.end();
         }
         res.writeHead(200, {'Content-Type': 'text/html'});
         res.write(data);
+        //console.log("Prvi del dela!");
         return res.end();
     });
 }
 
 io.sockets.on('connection', function (socket) {
-    socket.on('rgbLED', function (data)  {
+    socket.on('rgbLed', function (data)  {
         console.log(data);
+        console.log("Neki neki!");
         redRGB = parseInt(data.red);
         greenRGB = parseInt(data.green);
         blueRGB = parseInt(data.blue);
@@ -37,6 +41,7 @@ io.sockets.on('connection', function (socket) {
         ledRed.pwmWrite(redRGB);
         ledGreen.pwmWrite(greenRGB);
         ledBlue.pwmWrite(blueRGB);
+        console.log("Data on raspberry!");
     });
 });
 
